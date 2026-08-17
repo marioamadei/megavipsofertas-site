@@ -41,6 +41,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
+/* ============================================================
+   MOBILE-FIRST (pedido do Mario, ago/2026): base = tela de celular.
+   Telas maiores só GANHAM coisa (mais colunas, mais respiro) via
+   min-width — nunca o contrário. Antes era desktop com remendo de
+   max-width; virou a ordem certa.
+   ============================================================ */
 :root{
 --bg1:#0c0722;
 --bg2:#160c38;
@@ -64,7 +70,6 @@ line-height:1.55;
 overflow-x:hidden;
 -webkit-font-smoothing:antialiased;
 }
-/* premium dark background with brand glows */
 .bg{
 position:fixed;inset:0;z-index:-2;
 background:
@@ -79,69 +84,84 @@ background-image:radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
 background-size:26px 26px;
 mask-image:radial-gradient(circle at 50% 30%, #000, transparent 75%);
 }
-.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px}
 
-/* HERO */
-header{padding:36px 0 20px;text-align:center}
+/* HERO — mobile default: enxuto, botão perto do topo, urgência antes da explicação */
+header{padding:22px 0 8px;text-align:center}
+
+.top-badge{
+display:inline-flex;align-items:center;gap:7px;
+font-weight:700;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;
+color:var(--ink);background:var(--yellow);
+padding:7px 14px;border-radius:999px;margin:0 auto 16px;
+box-shadow:0 8px 20px rgba(252,226,42,0.25);
+}
+.top-badge .live-dot{width:7px;height:7px;border-radius:50%;background:var(--pink);flex:0 0 auto;animation:livePulse 1.4s ease-in-out infinite}
+@keyframes livePulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.55}}
+
 .logo{
-width:min(280px,58vw);height:auto;display:block;margin:0 auto 20px;
+width:min(190px,50vw);height:auto;display:block;margin:0 auto 16px;
 filter:drop-shadow(0 22px 45px rgba(245,48,155,0.35)) drop-shadow(0 6px 18px rgba(0,0,0,0.5));
 animation:float 6s ease-in-out infinite;
 }
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* cronômetro "próxima oferta em" — sempre em contagem regressiva */
+.countdown{
+display:inline-flex;flex-direction:column;align-items:center;gap:2px;width:max-content;max-width:100%;
+margin:0 auto 18px;padding:14px 26px;border-radius:20px;position:relative;
+background:linear-gradient(135deg,rgba(245,48,155,.20),rgba(55,217,239,.14));
+border:1px solid rgba(255,255,255,.16);
+box-shadow:0 0 44px rgba(245,48,155,.28);
+}
+.countdown .label{font-weight:700;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
+.countdown .timer{
+font-family:'Fredoka','Poppins',sans-serif;font-weight:700;
+font-size:clamp(2rem,9vw,2.7rem);line-height:1.1;color:var(--yellow);
+font-variant-numeric:tabular-nums;letter-spacing:1px;text-shadow:0 3px 0 rgba(0,0,0,.28)}
+.countdown .caption{font-size:.72rem;color:var(--muted);font-weight:600}
+
 .kicker{
-display:inline-block;font-weight:600;font-size:.78rem;letter-spacing:.18em;
+display:inline-block;font-weight:600;font-size:.74rem;letter-spacing:.14em;
 text-transform:uppercase;color:var(--cyan);
 border:1px solid rgba(55,217,239,0.35);border-radius:999px;
-padding:7px 16px;margin-bottom:20px;background:rgba(55,217,239,0.06);
+padding:6px 14px;margin-bottom:14px;background:rgba(55,217,239,0.06);
 }
 h1{
-font-weight:800;font-size:clamp(1.8rem,4.6vw,3.2rem);line-height:1.15;
-letter-spacing:-0.02em;margin:0 auto 18px;max-width:28ch;
+font-weight:800;font-size:clamp(1.55rem,7vw,3.2rem);line-height:1.16;
+letter-spacing:-0.02em;margin:0 auto 14px;max-width:22ch;
 }
 h1 .hl{color:var(--yellow)}
 .sub{
-font-size:clamp(1.02rem,2.3vw,1.28rem);color:var(--muted);
-max-width:44ch;margin:0 auto 34px;
+font-size:clamp(.98rem,3.6vw,1.28rem);color:var(--muted);
+max-width:38ch;margin:0 auto 24px;
 }
-/* título destaque: ofertas de hora em hora */
-.hourly{
-display:flex;flex-direction:column;align-items:center;gap:4px;width:max-content;max-width:100%;margin:4px auto 16px;
-font-family:'Fredoka','Poppins',sans-serif;line-height:1;
-padding:16px 30px;border-radius:20px;position:relative;
-background:linear-gradient(135deg,rgba(245,48,155,.18),rgba(55,217,239,.12));
-border:1px solid rgba(255,255,255,.16);
-box-shadow:0 0 48px rgba(245,48,155,.30);
-}
-.hourly b{font-weight:700;font-size:clamp(1.7rem,5vw,2.7rem);color:var(--yellow);letter-spacing:.5px;text-shadow:0 3px 0 rgba(0,0,0,.28)}
-.hourly b em{font-style:normal;color:#fff}
-.hourly small{font-family:'Poppins';font-weight:600;font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan)}
+
 /* pílulas de confiança */
-.pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:24px}
-.pill{display:inline-flex;align-items:center;gap:8px;font-size:.87rem;font-weight:600;color:var(--text);
-background:rgba(255,255,255,.05);border:1px solid var(--card-brd);border-radius:999px;padding:9px 16px}
-.pill svg{width:16px;height:16px;stroke:var(--cyan);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.pill{display:inline-flex;align-items:center;gap:7px;font-size:.82rem;font-weight:600;color:var(--text);
+background:rgba(255,255,255,.05);border:1px solid var(--card-brd);border-radius:999px;padding:8px 14px}
+.pill svg{width:15px;height:15px;stroke:var(--cyan);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .pill.star svg{fill:var(--yellow);stroke:var(--yellow)}
 
-/* CTA button */
+/* CTA — mobile default: largura cheia, alvo de toque grande */
 .cta{
-display:inline-flex;align-items:center;gap:12px;
-font-family:'Poppins',Arial,Helvetica,sans-serif;font-weight:800;font-size:1.16rem;letter-spacing:.4px;color:#fff;text-decoration:none;
-padding:18px 34px;border-radius:16px;position:relative;
+display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+font-family:'Poppins',Arial,Helvetica,sans-serif;font-weight:800;font-size:1.05rem;letter-spacing:.3px;color:#fff;text-decoration:none;
+padding:17px 22px;border-radius:16px;position:relative;
 background:linear-gradient(135deg,var(--pink),#c81f80);
 box-shadow:0 14px 34px rgba(245,48,155,0.45),0 0 0 1px rgba(255,255,255,0.08) inset;
 transition:transform .18s ease, box-shadow .18s ease;
 animation:pulse 2.6s ease-in-out infinite;
 }
 .cta:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 20px 44px rgba(245,48,155,0.6)}
-.cta svg{width:24px;height:24px;flex:0 0 auto}
+.cta svg{width:22px;height:22px;flex:0 0 auto}
 @keyframes pulse{0%,100%{box-shadow:0 14px 34px rgba(245,48,155,0.45),0 0 0 1px rgba(255,255,255,0.08) inset}50%{box-shadow:0 14px 40px rgba(245,48,155,0.62),0 0 0 6px rgba(245,48,155,0.10)}}
-.cta-note{margin-top:14px;font-size:.86rem;color:var(--muted);display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.cta-note{margin-top:14px;font-size:.8rem;color:var(--muted);display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .cta-note span{display:inline-flex;align-items:center;gap:6px}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);display:inline-block}
 
-/* === NOVO: dois botões (Telegram azul + WhatsApp verde), mesmo formato do .cta === */
-.cta-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;align-items:center}
+.cta-row{display:flex;flex-direction:column;gap:12px;justify-content:center;align-items:stretch}
 .cta.tg{background:linear-gradient(135deg,#37b6e9,#1f8fc8);
 box-shadow:0 14px 34px rgba(34,158,217,0.42),0 0 0 1px rgba(255,255,255,0.08) inset;
 animation:pulseTg 2.6s ease-in-out infinite;}
@@ -152,64 +172,72 @@ box-shadow:0 14px 34px rgba(37,211,102,0.42),0 0 0 1px rgba(255,255,255,0.08) in
 animation:pulseWa 2.6s ease-in-out infinite;}
 .cta.wa:hover{box-shadow:0 20px 44px rgba(37,211,102,0.58)}
 @keyframes pulseWa{0%,100%{box-shadow:0 14px 34px rgba(37,211,102,0.42),0 0 0 1px rgba(255,255,255,0.08) inset}50%{box-shadow:0 14px 40px rgba(37,211,102,0.6),0 0 0 6px rgba(37,211,102,0.10)}}
-@media(max-width:520px){.cta-row .cta{width:100%}}
 
-/* sections */
-section{padding:46px 0}
-.eyebrow{color:var(--cyan);font-weight:600;font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;text-align:center;margin-bottom:10px}
-h2{font-weight:800;font-size:clamp(1.5rem,3.6vw,2.2rem);text-align:center;letter-spacing:-0.01em;margin-bottom:34px}
+/* sections — coluna única por padrão */
+section{padding:34px 0}
+.eyebrow{color:var(--cyan);font-weight:600;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;text-align:center;margin-bottom:8px}
+h2{font-weight:800;font-size:clamp(1.35rem,5.5vw,2.2rem);text-align:center;letter-spacing:-0.01em;margin-bottom:26px}
 
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.grid{display:grid;grid-template-columns:1fr;gap:14px}
 .card{
 background:var(--card);border:1px solid var(--card-brd);border-radius:20px;
-padding:26px 24px;backdrop-filter:blur(6px);transition:transform .2s ease,border-color .2s ease;
+padding:22px 20px;backdrop-filter:blur(6px);transition:transform .2s ease,border-color .2s ease;
 }
 .card:hover{transform:translateY(-4px);border-color:rgba(245,48,155,0.4)}
 .ic{
-width:46px;height:46px;border-radius:13px;display:grid;place-items:center;margin-bottom:15px;
+width:42px;height:42px;border-radius:12px;display:grid;place-items:center;margin-bottom:13px;
 background:linear-gradient(135deg,rgba(55,217,239,0.18),rgba(245,48,155,0.18));
 border:1px solid rgba(255,255,255,0.12);
 }
-.ic svg{width:24px;height:24px;stroke:var(--cyan)}
-.card h3{font-size:1.12rem;font-weight:700;margin-bottom:7px}
-.card p{color:var(--muted);font-size:.97rem}
+.ic svg{width:22px;height:22px;stroke:var(--cyan)}
+.card h3{font-size:1.06rem;font-weight:700;margin-bottom:6px}
+.card p{color:var(--muted);font-size:.94rem}
 
 /* steps */
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:s}
-.step{position:relative;background:var(--card);border:1px solid var(--card-brd);border-radius:20px;padding:30px 22px 24px;text-align:center}
+.steps{display:grid;grid-template-columns:1fr;gap:14px;counter-reset:s}
+.step{position:relative;background:var(--card);border:1px solid var(--card-brd);border-radius:20px;padding:26px 20px 20px;text-align:center}
 .step::before{
 counter-increment:s;content:counter(s);
-display:grid;place-items:center;width:44px;height:44px;margin:0 auto 14px;
-font-family:'Fredoka';font-weight:700;font-size:1.3rem;color:var(--ink);
+display:grid;place-items:center;width:42px;height:42px;margin:0 auto 12px;
+font-family:'Fredoka';font-weight:700;font-size:1.22rem;color:var(--ink);
 background:var(--yellow);border-radius:50%;box-shadow:0 8px 20px rgba(252,226,42,0.3);
 }
-.step h3{font-size:1.05rem;font-weight:700;margin-bottom:5px}
-.step p{color:var(--muted);font-size:.95rem}
+.step h3{font-size:1.02rem;font-weight:700;margin-bottom:5px}
+.step p{color:var(--muted);font-size:.92rem}
 
-/* final cta band */
+/* faixa final de CTA */
 .band{
 text-align:center;background:linear-gradient(135deg,rgba(245,48,155,0.14),rgba(55,217,239,0.10));
-border:1px solid var(--card-brd);border-radius:26px;padding:48px 26px;margin:8px auto;
+border:1px solid var(--card-brd);border-radius:26px;padding:36px 20px;margin:8px auto;
 }
-.band h2{margin-bottom:12px}
-.band p{color:var(--muted);max-width:40ch;margin:0 auto 26px;font-size:1.05rem}
+.band h2{margin-bottom:10px}
+.band p{color:var(--muted);max-width:36ch;margin:0 auto 22px;font-size:1rem}
 
 /* footer */
-footer{border-top:1px solid rgba(255,255,255,0.08);margin-top:36px;padding:34px 0 46px}
-footer .wrap{color:var(--muted);font-size:.82rem;text-align:center}
-footer .brand{font-family:'Fredoka';font-weight:700;color:var(--text);font-size:1.05rem;letter-spacing:.02em;margin-bottom:12px}
+footer{border-top:1px solid rgba(255,255,255,0.08);margin-top:30px;padding:28px 0 40px}
+footer .wrap{color:var(--muted);font-size:.8rem;text-align:center}
+footer .brand{font-family:'Fredoka';font-weight:700;color:var(--text);font-size:1.02rem;letter-spacing:.02em;margin-bottom:12px}
 footer p{max-width:60ch;margin:0 auto 10px}
 footer a{color:var(--cyan);text-decoration:none}
 
-/* reveal animation */
+/* revelação ao rolar */
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
 .reveal.in{opacity:1;transform:none}
 
-@media(max-width:680px){
-.grid{grid-template-columns:1fr}
-.steps{grid-template-columns:1fr}
-header{padding:38px 0 8px}
-section{padding:34px 0}
+/* ===== a partir daqui, telas maiores GANHAM layout — nunca perdem ===== */
+@media(min-width:560px){
+.cta-row{flex-direction:row}
+.cta{width:auto}
+}
+@media(min-width:700px){
+header{padding:36px 0 20px}
+section{padding:46px 0}
+.wrap{padding:0 22px}
+.logo{width:min(280px,58vw);margin-bottom:20px}
+.grid{grid-template-columns:repeat(2,1fr);gap:18px}
+.steps{grid-template-columns:repeat(3,1fr);gap:18px}
+.band{padding:48px 26px}
+h2{margin-bottom:34px}
 }
 </style>
 
@@ -239,7 +267,15 @@ src="https://www.facebook.com/tr?id=976664112051267&ev=PageView&noscript=1"
 
 <header>
 <div class="wrap">
+<div class="top-badge reveal"><span class="live-dot"></span>Ofertas reais a todo instante</div>
+
 <img class="logo" src="logo.png" alt="MEGA VIPS Ofertas" />
+
+<div class="countdown reveal">
+<span class="label">Próxima oferta em</span>
+<span class="timer" id="countdownTimer">20:00</span>
+<span class="caption">todos os dias, das 7h às 23h</span>
+</div>
 
 <div class="cta-row reveal">
 <a class="cta wa" href="https://whatsapp.com/channel/0029VbDRQDVG3R3awPibk13c" target="_blank" rel="noopener" onclick="return gtag_report_conversion('https://whatsapp.com/channel/0029VbDRQDVG3R3awPibk13c');">
@@ -257,10 +293,6 @@ Entrar no Telegram
 <span><span class="dot"></span>Saia quando quiser</span>
 </div>
 
-<div class="hourly reveal">
-<b>Ofertas de <em>hora em hora</em></b>
-<small>das 7h às 23h</small>
-</div>
 <div class="kicker reveal">Comunidade de ofertas · Telegram e WhatsApp</div>
 <h1 class="reveal">As melhores ofertas de eletrônicos e casa, <span class="hl">direto no seu Telegram e WhatsApp</span></h1>
 <p class="sub reveal">A gente garimpa, confere o preço e manda o link pronto. Achados novos todos os dias. Escolha onde receber — entrar é de graça.</p>
@@ -347,6 +379,31 @@ Entrar no Telegram
 </footer>
 
 <script>
+// Cronômetro "Próxima oferta em" — pedido do Mario (ago/2026): sempre em
+// contagem regressiva, 20min. Calcula a partir de Date.now() (não um
+// contador decrescente ingênuo) pra não atrasar se a aba ficar em segundo
+// plano — e reinicia sozinho pra 20:00 assim que chega em zero, num loop
+// sem fim.
+(function(){
+  var DURATION = 20 * 60 * 1000;
+  var el = document.getElementById('countdownTimer');
+  var target = Date.now() + DURATION;
+  function pad(n){ return n < 10 ? '0' + n : '' + n; }
+  function tick(){
+    var diff = target - Date.now();
+    if (diff <= 0) {
+      target = Date.now() + DURATION;
+      diff = DURATION;
+    }
+    var totalSec = Math.floor(diff / 1000);
+    var m = Math.floor(totalSec / 60);
+    var s = totalSec % 60;
+    el.textContent = pad(m) + ':' + pad(s);
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+
 var io = new IntersectionObserver(function(entries){
 entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
 },{threshold:.12});
