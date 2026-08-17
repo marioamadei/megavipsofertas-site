@@ -87,17 +87,22 @@ mask-image:radial-gradient(circle at 50% 30%, #000, transparent 75%);
 .wrap{max-width:1080px;margin:0 auto;padding:0 18px}
 
 /* HERO — mobile default: enxuto, botão perto do topo, urgência antes da explicação */
-header{padding:22px 0 30px;text-align:center}
+header{padding:0 0 30px;text-align:center}
 
+/* tarja "ofertas reais a todo instante" — pedido do Mario: largura total da
+página, não mais um badge/pílula centralizado. Fica fora do .wrap de
+propósito, senão herdava o padding lateral e não encostava nas bordas. */
 .top-badge{
-display:inline-flex;align-items:center;gap:7px;
-font-weight:700;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;
+display:flex;align-items:center;justify-content:center;gap:8px;
+width:100%;
+font-weight:700;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
 color:var(--ink);background:var(--yellow);
-padding:7px 14px;border-radius:999px;margin:0 auto 16px;
-box-shadow:0 8px 20px rgba(252,226,42,0.25);
+padding:11px 16px;margin-bottom:22px;
+box-shadow:0 4px 18px rgba(252,226,42,0.25);
 }
 .top-badge .live-dot{width:7px;height:7px;border-radius:50%;background:var(--pink);flex:0 0 auto;animation:livePulse 1.4s ease-in-out infinite}
 @keyframes livePulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.55}}
+@media(min-width:700px){.top-badge{font-size:.8rem;padding:13px 16px}}
 
 .logo{
 width:min(190px,50vw);height:auto;display:block;margin:0 auto 16px;
@@ -282,9 +287,10 @@ src="https://www.facebook.com/tr?id=976664112051267&ev=PageView&noscript=1"
 <div class="bg"></div>
 <div class="grain"></div>
 
+<div class="top-badge reveal"><span class="live-dot"></span>Ofertas reais a todo instante</div>
+
 <header>
 <div class="wrap">
-<div class="top-badge reveal"><span class="live-dot"></span>Ofertas reais a todo instante</div>
 
 <img class="logo" src="logo.png" alt="MEGA VIPS Ofertas" />
 
