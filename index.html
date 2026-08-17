@@ -111,6 +111,12 @@ animation:float 6s ease-in-out infinite;
 }
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 
+.tagline{
+font-family:'Fredoka','Poppins',sans-serif;font-weight:600;
+font-size:clamp(1rem,4vw,1.25rem);color:var(--yellow);
+letter-spacing:.01em;margin:0 auto 22px;text-shadow:0 2px 12px rgba(252,226,42,0.35);
+}
+
 /* cronômetro "próxima oferta em" — sempre em contagem regressiva */
 .countdown{
 display:inline-flex;flex-direction:column;align-items:center;gap:2px;width:max-content;max-width:100%;
@@ -293,6 +299,7 @@ src="https://www.facebook.com/tr?id=976664112051267&ev=PageView&noscript=1"
 <div class="wrap">
 
 <img class="logo" src="logo.png" alt="MEGA VIPS Ofertas" />
+<p class="tagline reveal">Grupo de descontos reais. Entre agora!</p>
 
 <div class="countdown reveal">
 <span class="label">Próxima oferta em</span>
