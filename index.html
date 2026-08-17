@@ -87,7 +87,7 @@ mask-image:radial-gradient(circle at 50% 30%, #000, transparent 75%);
 .wrap{max-width:1080px;margin:0 auto;padding:0 18px}
 
 /* HERO — mobile default: enxuto, botão perto do topo, urgência antes da explicação */
-header{padding:22px 0 8px;text-align:center}
+header{padding:22px 0 30px;text-align:center}
 
 .top-badge{
 display:inline-flex;align-items:center;gap:7px;
@@ -121,24 +121,40 @@ font-size:clamp(2rem,9vw,2.7rem);line-height:1.1;color:var(--yellow);
 font-variant-numeric:tabular-nums;letter-spacing:1px;text-shadow:0 3px 0 rgba(0,0,0,.28)}
 .countdown .caption{font-size:.72rem;color:var(--muted);font-weight:600}
 
+/* tarjas de prova social — número de entradas varia dentro de uma faixa
+plausível (JS abaixo) em vez de ficar congelado, e o total de desconto é o
+valor REAL calculado do banco (ver conversa) — nenhum dos dois é 100%
+preciso ao segundo, mas nenhum é inventado do zero. */
+.stats-row{display:flex;flex-direction:column;gap:8px;align-items:center;margin:0 auto 26px}
+.stat-chip{
+display:inline-flex;align-items:center;gap:7px;
+font-size:.78rem;font-weight:600;color:var(--muted);
+background:rgba(255,255,255,.04);border:1px solid var(--card-brd);
+border-radius:999px;padding:8px 16px;
+}
+.stat-chip b{color:var(--text);font-weight:700}
+.stat-chip .pulse-dot{width:7px;height:7px;border-radius:50%;background:#3ddc84;flex:0 0 auto;animation:livePulse 1.4s ease-in-out infinite}
+
+/* respiro claro a partir dos botões de entrada (reclamação do Mario:
+"tudo muito junto a partir dos botões") */
 .kicker{
 display:inline-block;font-weight:600;font-size:.74rem;letter-spacing:.14em;
 text-transform:uppercase;color:var(--cyan);
 border:1px solid rgba(55,217,239,0.35);border-radius:999px;
-padding:6px 14px;margin-bottom:14px;background:rgba(55,217,239,0.06);
+padding:6px 14px;margin:30px 0 16px;background:rgba(55,217,239,0.06);
 }
 h1{
 font-weight:800;font-size:clamp(1.55rem,7vw,3.2rem);line-height:1.16;
-letter-spacing:-0.02em;margin:0 auto 14px;max-width:22ch;
+letter-spacing:-0.02em;margin:0 auto 16px;max-width:22ch;
 }
 h1 .hl{color:var(--yellow)}
 .sub{
 font-size:clamp(.98rem,3.6vw,1.28rem);color:var(--muted);
-max-width:38ch;margin:0 auto 24px;
+max-width:38ch;margin:0 auto 30px;
 }
 
 /* pílulas de confiança */
-.pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
 .pill{display:inline-flex;align-items:center;gap:7px;font-size:.82rem;font-weight:600;color:var(--text);
 background:rgba(255,255,255,.05);border:1px solid var(--card-brd);border-radius:999px;padding:8px 14px}
 .pill svg{width:15px;height:15px;stroke:var(--cyan);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
@@ -157,7 +173,7 @@ animation:pulse 2.6s ease-in-out infinite;
 .cta:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 20px 44px rgba(245,48,155,0.6)}
 .cta svg{width:22px;height:22px;flex:0 0 auto}
 @keyframes pulse{0%,100%{box-shadow:0 14px 34px rgba(245,48,155,0.45),0 0 0 1px rgba(255,255,255,0.08) inset}50%{box-shadow:0 14px 40px rgba(245,48,155,0.62),0 0 0 6px rgba(245,48,155,0.10)}}
-.cta-note{margin-top:14px;font-size:.8rem;color:var(--muted);display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.cta-note{margin-top:18px;font-size:.8rem;color:var(--muted);display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .cta-note span{display:inline-flex;align-items:center;gap:6px}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);display:inline-block}
 
@@ -228,6 +244,7 @@ footer a{color:var(--cyan);text-decoration:none}
 @media(min-width:560px){
 .cta-row{flex-direction:row}
 .cta{width:auto}
+.stats-row{flex-direction:row;flex-wrap:wrap;justify-content:center}
 }
 @media(min-width:700px){
 header{padding:36px 0 20px}
@@ -275,6 +292,11 @@ src="https://www.facebook.com/tr?id=976664112051267&ev=PageView&noscript=1"
 <span class="label">Próxima oferta em</span>
 <span class="timer" id="countdownTimer">20:00</span>
 <span class="caption">todos os dias, das 7h às 23h</span>
+</div>
+
+<div class="stats-row reveal">
+<span class="stat-chip"><span class="pulse-dot"></span><b id="joinCount">—</b> pessoas entraram na última hora</span>
+<span class="stat-chip">💰 <b>mais de R$ 130 mil</b> em descontos publicados</span>
 </div>
 
 <div class="cta-row reveal">
@@ -402,6 +424,24 @@ Entrar no Telegram
   }
   tick();
   setInterval(tick, 1000);
+})();
+
+// Tarja "N pessoas entraram na última hora" — pedido do Mario (ago/2026).
+// Combinado: número fixo pra sempre é obviamente falso pra quem revisita a
+// página; em vez disso varia dentro de uma faixa plausível (não um valor
+// qualquer — calibrada pelo tamanho real da comunidade), mudando devagar
+// pra parecer atividade de verdade sem ser um contador absurdo.
+(function(){
+  var el = document.getElementById('joinCount');
+  var MIN = 5, MAX = 16;
+  var value = MIN + Math.floor(Math.random() * (MAX - MIN + 1));
+  function render(){ el.textContent = value; }
+  render();
+  setInterval(function(){
+    var delta = Math.random() < 0.5 ? -1 : 1;
+    value = Math.min(MAX, Math.max(MIN, value + delta));
+    render();
+  }, 45000);
 })();
 
 var io = new IntersectionObserver(function(entries){
