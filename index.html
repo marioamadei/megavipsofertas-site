@@ -19,6 +19,10 @@
         window.open(url, '_blank');
       }
     };
+    // window.mvTrackClick vem do snippet de analytics próprio no fim do
+    // body — já existe nesse ponto porque só roda num clique, bem depois do
+    // carregamento inicial da página.
+    if (window.mvTrackClick) window.mvTrackClick(url);
     gtag('event', 'conversion', {
         'send_to': 'AW-18371382604/rsZRCOGbhtwcEMyalLhE',
         'value': 1.0,
@@ -471,12 +475,22 @@ io.observe(el);
 <script>
 (function () {
   var ENDPOINT = "https://megavips-analytics.vercel.app/api/track";
-  var payload = JSON.stringify({ path: location.pathname, referrer: document.referrer || null });
-  if (navigator.sendBeacon) {
-    navigator.sendBeacon(ENDPOINT, new Blob([payload], { type: "application/json" }));
-  } else {
-    fetch(ENDPOINT, { method: "POST", body: payload, headers: { "Content-Type": "application/json" }, keepalive: true }).catch(function () {});
+  function send(type, label) {
+    var payload = JSON.stringify({ path: location.pathname, referrer: document.referrer || null, type: type, label: label || null });
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(ENDPOINT, new Blob([payload], { type: "application/json" }));
+    } else {
+      fetch(ENDPOINT, { method: "POST", body: payload, headers: { "Content-Type": "application/json" }, keepalive: true }).catch(function () {});
+    }
   }
+  // Exposta pra gtag_report_conversion (no <head>) chamar no clique dos
+  // botões de WhatsApp/Telegram — dá pra comparar clique vs visita no
+  // painel próprio sem depender do Google Ads pra isso.
+  window.mvTrackClick = function (url) {
+    var label = /whatsapp/i.test(url) ? "whatsapp" : /t\.me/i.test(url) ? "telegram" : "outro";
+    send("click", label);
+  };
+  send("pageview");
 })();
 </script>
 </body>
